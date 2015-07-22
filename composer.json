@@ -1,0 +1,30 @@
+{
+    "name": "prehistorical/landing",
+    "description": "Заготовка для лэндинга",
+    "keywords": [
+        "landing"
+    ],
+    "homepage": "https://github.com/thephpleague/:package_name",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Boris Dorofeev",
+            "email": "boris.dorofeev2014@yandex.ru",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Prehistorical\\Landing\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
