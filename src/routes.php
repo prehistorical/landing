@@ -2,6 +2,7 @@
 
 Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function()
 {
+    Route::get('/create/init/{block}',              ['as' => 'create_init', 'uses' => 'Prehistorical\Landing\CreateController@createInitBlock']);
     Route::get('/create/init',                      ['as' => 'create_init', 'uses' => 'Prehistorical\Landing\CreateController@createInit']);
 
     //Для групп внутри блоков:

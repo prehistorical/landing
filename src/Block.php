@@ -327,14 +327,14 @@ class Block extends Model
     }
 
     //Создание структуры блоков лэндинга из конфига
-    public static function initBlocks()
+    public static function initBlocks($block_name='')
     {
-        //Сначала очищаем записи во всех таблицах
-
-
-
-        //Создаем поля по структуре
-        $sitestruct = config('landing');
+        if($block_name==''){
+            //Создаем поля по структуре
+            $sitestruct = config('sitestruct');
+        }else{
+            $sitestruct = [$block_name=>config('sitestruct')[$block_name]];
+        }
 
         foreach($sitestruct as $blockname => $blockstruct)
         {

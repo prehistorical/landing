@@ -33,6 +33,7 @@ class CreateController extends Controller
     {
 
         try {
+
             //Очистим всё, если там что-то есть
             DB::table('blocks')->delete();
             DB::table('groups')->delete();
@@ -43,6 +44,19 @@ class CreateController extends Controller
             DB::table('images')->delete();
 
             Block::initBlocks();
+        } catch(Exception $exception) {
+
+            return ['status'=>('Что-то пошло не так. '.$exception->getMessage())];
+        }
+
+        return ['status'=>'OK'];
+    }
+
+    public function createInitBlock($block_name)
+    {
+
+        try {
+            Block::initBlocks($block_name);
         } catch(Exception $exception) {
 
             return ['status'=>('Что-то пошло не так. '.$exception->getMessage())];
