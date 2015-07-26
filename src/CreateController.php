@@ -54,7 +54,6 @@ class CreateController extends Controller
 
     public function createInitBlock($block_name)
     {
-
         try {
             Block::initBlocks($block_name);
         } catch(Exception $exception) {

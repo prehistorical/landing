@@ -13,5 +13,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function()
     Route::post('/save/groupitem',                  ['as' => 'save_groupitem', 'uses' => 'Prehistorical\Landing\SaveController@saveGroupItem']);
 
     //Удаление
-    Route::delete('/delete/groupitem/{block}',      ['as' => 'delete_groupitem', 'uses' => 'Prehistorical\Landing\DeleteController@deleteGroupItem']);
+    Route::delete('/delete/groupitem/{id}',      ['as' => 'delete_groupitem', 'uses' => 'DeleteAdminController@deleteGroupItem']);
 });

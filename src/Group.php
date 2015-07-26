@@ -127,4 +127,38 @@ class Group extends Model
         }
 
     }
+
+    public function deleteGroupItem(){
+
+        $id = $this->id;
+
+        $collection = Stringfield::where('group_id', '=', $id)->get();
+        foreach($collection as $field){
+            $field->delete();
+        }
+
+        $collection = Textfield::where('group_id', '=', $id)->get();
+        foreach($collection as $field){
+            $field->delete();
+        }
+
+        $collection = Numb::where('group_id', '=', $id)->get();
+        foreach($collection as $field){
+            $field->delete();
+        }
+
+        $collection = Bool::where('group_id', '=', $id)->get();
+        foreach($collection as $field){
+            $field->delete();
+        }
+
+        $collection = Imageitem::where('group_id', '=', $id)->get();
+        foreach($collection as $field){
+            $field->delete();
+        }
+
+        $gr = Group::find($id);
+        $gr->delete();
+    }
+
 }
