@@ -55,9 +55,9 @@ class Group extends Model
             $this->sorter = $dataobj['sorter'];
         }
 
-        $sitestruct = config('landing');
+        $landing = config('landing');
 
-        if(array_key_exists($this->block_name, $sitestruct))
+        if(array_key_exists($this->block_name, $landing))
         {
             $groupstruct = config('landing')[$this->block_name]['group'];
 

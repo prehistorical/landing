@@ -52,12 +52,12 @@ class Block extends Model
 
     public function saveBlock($dataobj)
     {
-        $sitestruct = config('landing');
+        $landing = config('landing');
 
-        if(array_key_exists($this->name, $sitestruct))
+        if(array_key_exists($this->name, $landing))
         {
 
-            $blockstruct = $sitestruct[$this->name];
+            $blockstruct = $landing[$this->name];
 
             if(array_key_exists('title', $dataobj))
             {
@@ -138,7 +138,7 @@ class Block extends Model
 
         $blockname = $this->name;
 
-        $groupstruct = config('sitestruct')[$this->name]['group'];
+        $groupstruct = config('landing')[$this->name]['group'];
 
 
         $newGroupItem = new \Prehistorical\Landing\Group();
@@ -331,12 +331,12 @@ class Block extends Model
     {
         if($block_name==''){
             //Создаем поля по структуре
-            $sitestruct = config('sitestruct');
+            $landing = config('landing');
         }else{
-            $sitestruct = [$block_name=>config('sitestruct')[$block_name]];
+            $landing = [$block_name=>config('landing')[$block_name]];
         }
 
-        foreach($sitestruct as $blockname => $blockstruct)
+        foreach($landing as $blockname => $blockstruct)
         {
             $newBlock = static::find($blockname);
 
