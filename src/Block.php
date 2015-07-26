@@ -262,7 +262,7 @@ class Block extends Model
                 $fields[$numb->name] = $numb->value;
             }
 
-            $dataArr[] = $dataArrItem;
+            $dataArr['id'.$item->id] = $dataArrItem;
         }
 
         return $dataArr;
