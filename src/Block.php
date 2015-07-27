@@ -224,7 +224,7 @@ class Block extends Model
 
         foreach($groups as $item)
         {
-            $dataArrItem = ['id'=>$item->id, 'sorter'=>$item->sorter, 'show'=>$item->show, 'stringfields'=>[], 'textfields'=>[], 'images'=>[], 'bools'=>[], 'numbs'=>[]];
+            $dataArrItem = ['updated_at'=>$item->updated_at->timestamp, 'id'=>$item->id, 'sorter'=>$item->sorter, 'show'=>$item->show, 'stringfields'=>[], 'textfields'=>[], 'images'=>[], 'bools'=>[], 'numbs'=>[]];
 
             $fields = & $dataArrItem['stringfields'];
             foreach($item->stringfields as $stringfield)
