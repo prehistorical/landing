@@ -40,6 +40,7 @@ class CreateController extends Controller
             DB::table('stringfields')->delete();
             DB::table('textfields')->delete();
             DB::table('bools')->delete();
+            DB::table('datetimes')->delete();
             DB::table('numbs')->delete();
             DB::table('images')->delete();
 
