@@ -4,7 +4,7 @@ namespace Prehistorical\Landing;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Datetime extends Model
+class Pdatetime extends Model
 {
     public $timestamps = false;
     protected static $unguarded = true;

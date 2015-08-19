@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDatetimesTable extends Migration
+class CreatePdatetimesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateDatetimesTable extends Migration
      */
     public function up()
     {
-        Schema::create('datetimes', function(Blueprint $table)
+        Schema::create('pdatetimes', function(Blueprint $table)
         {
             $table->increments('id');
 
@@ -35,6 +35,6 @@ class CreateDatetimesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('datetimes');
+        Schema::drop('pdatetimes');
     }
 }
