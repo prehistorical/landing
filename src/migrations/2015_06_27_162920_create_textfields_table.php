@@ -36,3 +36,4 @@ class CreateTextfieldsTable extends Migration
         Schema::drop('textfields');
     }
 }
+

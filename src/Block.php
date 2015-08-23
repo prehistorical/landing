@@ -2,12 +2,13 @@
 
 namespace Prehistorical\Landing;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Prehistorical\Landing\Stringfield;
 use Prehistorical\Landing\Textfield;
 use Prehistorical\Landing\Numb;
 use Prehistorical\Landing\Bool;
-use Prehistorical\Landing\Datetime;
+use Prehistorical\Landing\Pdatetime;
 use Prehistorical\Landing\Imageitem;
 
 class Block extends Model
@@ -52,9 +53,9 @@ class Block extends Model
 
     }
 
-    public function datetimes() {
+    public function pdatetimes() {
 
-        return $this->hasMany('Prehistorical\Landing\Datetime', 'block_name');
+        return $this->hasMany('Prehistorical\Landing\Pdatetime', 'block_name');
 
     }
 
@@ -72,7 +73,7 @@ class Block extends Model
                 $this->title = $dataobj['title'];
             }
 
-            foreach(['stringfields', 'textfields', 'numbs', 'images', 'bools', 'datetimes'] as $typename) {
+            foreach(['stringfields', 'textfields', 'numbs', 'images', 'bools', 'pdatetimes'] as $typename) {
 
                 if(array_key_exists($typename, $dataobj) && array_key_exists($typename, $blockstruct)){
 
@@ -102,8 +103,8 @@ class Block extends Model
                                 $field->value = $data_fs[$fieldname] == "true" ? true : false;
                                 $field->save();
 
-                            }else if($typename == 'datetimes'){
-                                $field = Datetime::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname]);
+                            }else if($typename == 'pdatetimes'){
+                                $field = Pdatetime::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname]);
                                 $field->value = $data_fs[$fieldname];
                                 $field->save();
 
@@ -147,7 +148,7 @@ class Block extends Model
     public function createGroupItem()
     {
 
-        $dataArr = ['sorter'=>99, 'show'=>true, 'stringfields'=>[], 'textfields'=>[], 'numbs'=>[], 'bools'=>[], 'datetimes'=>[], 'images'=>[]];
+        $dataArr = ['sorter'=>99, 'show'=>true, 'stringfields'=>[], 'textfields'=>[], 'numbs'=>[], 'bools'=>[], 'pdatetimes'=>[], 'images'=>[]];
 
         $blockname = $this->name;
 
@@ -200,13 +201,15 @@ class Block extends Model
             }
         }
 
-        if(array_key_exists('datetimes', $groupstruct))
+        if(array_key_exists('pdatetimes', $groupstruct))
         {
-            foreach($groupstruct['datetimes'] as $fieldname)
+            foreach($groupstruct['pdatetimes'] as $fieldname)
             {
-                $dtitem = Bool::firstOrNew(['block_name'=>$blockname, 'name'=>$fieldname, 'group_id'=>$newGroupItem->id]);
-                $newGroupItem->datetimes()->save($dtitem);
-                $dataArr['datetimes'][$fieldname]='';
+                $dtitem = Pdatetime::firstOrNew(['block_name'=>$blockname, 'name'=>$fieldname, 'group_id'=>$newGroupItem->id]);
+                $dtitem->value = new \DateTime();
+                $newGroupItem->pdatetimes()->save($dtitem);
+                $dataArr['pdatetimes'][$fieldname]= $dtitem->value->format('d.m.Y H:i:s');
+
             }
         }
 
@@ -238,16 +241,16 @@ class Block extends Model
 
         if($addshow)
         {
-            $groups = \Prehistorical\Landing\Group::where('block_name','=',$this->name)->with(['stringfields', 'textfields', 'numbs', 'bools', 'datetimes', 'images'])->where('show', '=', true)->get();
+            $groups = \Prehistorical\Landing\Group::where('block_name','=',$this->name)->with(['stringfields', 'textfields', 'numbs', 'bools', 'pdatetimes', 'images'])->where('show', '=', true)->get();
         }
         else
         {
-            $groups = \Prehistorical\Landing\Group::where('block_name','=',$this->name)->with(['stringfields', 'textfields', 'numbs', 'bools', 'datetimes', 'images'])->get();
+            $groups = \Prehistorical\Landing\Group::where('block_name','=',$this->name)->with(['stringfields', 'textfields', 'numbs', 'bools', 'pdatetimes', 'images'])->get();
         }
 
         foreach($groups as $item)
         {
-            $dataArrItem = ['updated_at'=>$item->updated_at->timestamp, 'id'=>$item->id, 'sorter'=>$item->sorter, 'show'=>$item->show, 'stringfields'=>[], 'textfields'=>[], 'images'=>[], 'bools'=>[], 'datetimes'=>[], 'numbs'=>[]];
+            $dataArrItem = ['updated_at'=>$item->updated_at->timestamp, 'id'=>$item->id, 'sorter'=>$item->sorter, 'show'=>$item->show, 'stringfields'=>[], 'textfields'=>[], 'images'=>[], 'bools'=>[], 'pdatetimes'=>[], 'numbs'=>[]];
 
             $fields = & $dataArrItem['stringfields'];
             foreach($item->stringfields as $stringfield)
@@ -279,8 +282,8 @@ class Block extends Model
                 $fields[$boolitem->name] = $boolitem->value;
             }
 
-            $fields = & $dataArrItem['datetimes'];
-            foreach($item->datetimes as $dtitem)
+            $fields = & $dataArrItem['pdatetimes'];
+            foreach($item->pdatetimes as $dtitem)
             {
                 $fields[$dtitem->name] = $dtitem->value;
             }
@@ -300,9 +303,9 @@ class Block extends Model
     public static function  getBlocksDisplayArray($addshow=false, $block_name='')
     {
         if($block_name!=''){
-            $blocks = Block::where('name', '=', $block_name)->with(['stringfields', 'textfields', 'numbs', 'bools', 'datetimes', 'images'])->get();
+            $blocks = Block::where('name', '=', $block_name)->with(['stringfields', 'textfields', 'numbs', 'bools', 'pdatetimes', 'images'])->get();
         }else{
-            $blocks = Block::with(['stringfields', 'textfields', 'numbs', 'bools', 'datetimes', 'images'])->get();
+            $blocks = Block::with(['stringfields', 'textfields', 'numbs', 'bools', 'pdatetimes', 'images'])->get();
         }
 
 
@@ -310,7 +313,7 @@ class Block extends Model
 
         foreach($blocks as $block)
         {
-            $dataArr[$block->name] = ['title'=>$block->title, 'stringfields'=>[], 'textfields'=>[], 'images'=>[], 'bools'=>[], 'datetimes'=>[], 'numbs'=>[]];
+            $dataArr[$block->name] = ['title'=>$block->title, 'stringfields'=>[], 'textfields'=>[], 'images'=>[], 'bools'=>[], 'pdatetimes'=>[], 'numbs'=>[]];
 
             $block_strfs = & $dataArr[$block->name]['stringfields'];
             foreach($block->stringfields as $stringfield)
@@ -342,10 +345,10 @@ class Block extends Model
                 $block_bools[$boolitem->name] = $boolitem->value;
             }
 
-            $block_datetimes = & $dataArr[$block->name]['datetimes'];
-            foreach($block->datetimes as $dtitem)
+            $block_pdatetimes = & $dataArr[$block->name]['pdatetimes'];
+            foreach($block->pdatetimes as $dtitem)
             {
-                $block_datetimes[$dtitem->name] = $dtitem->value;
+                $block_pdatetimes[$dtitem->name] = $dtitem->value;
             }
 
             $block_numbs = & $dataArr[$block->name]['numbs'];
@@ -418,11 +421,11 @@ class Block extends Model
                     }
                 }
 
-                if(array_key_exists('datetimes', $blockstruct))
+                if(array_key_exists('pdatetimes', $blockstruct))
                 {
-                    foreach($blockstruct['datetimes'] as $fieldname)
+                    foreach($blockstruct['pdatetimes'] as $fieldname)
                     {
-                        $dtitem = Datetime::firstOrCreate(['block_name'=>$blockname, 'name'=>$fieldname]);
+                        $dtitem = Pdatetime::firstOrCreate(['block_name'=>$blockname, 'name'=>$fieldname]);
                     }
                 }
 

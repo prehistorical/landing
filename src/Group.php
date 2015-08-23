@@ -36,9 +36,9 @@ class Group extends Model
 
     }
 
-    public function datetimes() {
+    public function pdatetimes() {
 
-        return $this->hasMany('Prehistorical\Landing\Datetime', 'group_id');
+        return $this->hasMany('Prehistorical\Landing\Pdatetime', 'group_id');
 
     }
 
@@ -67,7 +67,7 @@ class Group extends Model
         {
             $groupstruct = config('landing')[$this->block_name]['group'];
 
-            foreach(['stringfields', 'textfields', 'numbs', 'images', 'bools', 'datetimes'] as $typename) {
+            foreach(['stringfields', 'textfields', 'numbs', 'images', 'bools', 'pdatetimes'] as $typename) {
 
                 if(array_key_exists($typename, $dataobj) && array_key_exists($typename, $groupstruct)){
 
@@ -97,10 +97,10 @@ class Group extends Model
                                 $field->value = $data_fs[$fieldname] == "true" ? true : false;
                                 $this->bools()->save($field);
 
-                            }else if($typename == 'datetimes'){
-                                $field = Datetime::firstOrNew(['block_name'=>$this->block_name, 'name'=>$fieldname, 'group_id'=>$dataobj['id']]);
+                            }else if($typename == 'pdatetimes'){
+                                $field = Pdatetime::firstOrNew(['block_name'=>$this->block_name, 'name'=>$fieldname, 'group_id'=>$dataobj['id']]);
                                 $field->value = $data_fs[$fieldname];
-                                $this->datetimes()->save($field);
+                                $this->pdatetimes()->save($field);
 
                             }else if($typename == 'images'){
                                 $field = Imageitem::firstOrNew(['block_name'=>$this->block_name, 'name'=>$fieldname, 'group_id'=>$dataobj['id']]);
@@ -163,7 +163,7 @@ class Group extends Model
             $field->delete();
         }
 
-        $collection = Datetime::where('group_id', '=', $id)->get();
+        $collection = Pdatetime::where('group_id', '=', $id)->get();
         foreach($collection as $field){
             $field->delete();
         }

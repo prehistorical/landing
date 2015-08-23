@@ -14,4 +14,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'adm'], function()
 
     //Удаление
     Route::delete('/delete/groupitem/{id}',         ['as' => 'delete_groupitem', 'uses' => 'Prehistorical\Landing\DeleteController@deleteGroupItem']);
+
 });

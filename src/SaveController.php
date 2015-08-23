@@ -3,6 +3,7 @@
 namespace Prehistorical\Landing;
 
 use Prehistorical\Landing\Block;
+use Prehistorical\Landing\Group;
 use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\Controller;
 
@@ -51,7 +52,7 @@ class SaveController extends Controller
             if($dataobj['entity'] == 'groupitem')
             {
                 try {
-                    $groupitem = \App\Group::findOrFail($dataobj['id']);
+                    $groupitem = Group::findOrFail($dataobj['id']);
 
                     $result = $groupitem->saveGroupItem($dataobj);
 
