@@ -84,32 +84,32 @@ class Block extends Model
                         if(array_key_exists($fieldname, $data_fs)){
 
                             if($typename == 'stringfields'){
-                                $field = Stringfield::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname]);
+                                $field = Stringfield::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname, 'group_id'=>0]);
                                 $field->value = $data_fs[$fieldname];
                                 $field->save();
 
                             }else if($typename == 'textfields'){
-                                $field = Textfield::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname]);
+                                $field = Textfield::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname, 'group_id'=>0]);
                                 $field->value = $data_fs[$fieldname];
                                 $field->save();
 
                             }else if($typename == 'numbs'){
-                                $field = Numb::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname]);
+                                $field = Numb::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname, 'group_id'=>0]);
                                 $field->value = $data_fs[$fieldname];
                                 $field->save();
 
                             }else if($typename == 'bools'){
-                                $field = Bool::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname]);
+                                $field = Bool::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname, 'group_id'=>0]);
                                 $field->value = $data_fs[$fieldname] == "true" ? true : false;
                                 $field->save();
 
                             }else if($typename == 'pdatetimes'){
-                                $field = Pdatetime::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname]);
+                                $field = Pdatetime::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname, 'group_id'=>0]);
                                 $field->value = $data_fs[$fieldname];
                                 $field->save();
 
                             }else if($typename == 'images'){
-                                $field = Imageitem::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname]);
+                                $field = Imageitem::firstOrNew(['block_name'=>$this->name, 'name'=>$fieldname, 'group_id'=>0]);
 
                                 if(array_key_exists('alt', $data_fs[$fieldname])){
                                     $field->alt = $data_fs[$fieldname]['alt'];
@@ -303,9 +303,47 @@ class Block extends Model
     public static function  getBlocksDisplayArray($addshow=false, $block_name='')
     {
         if($block_name!=''){
-            $blocks = Block::where('name', '=', $block_name)->with(['stringfields', 'textfields', 'numbs', 'bools', 'pdatetimes', 'images'])->get();
+            $blocks = Block::where('name', '=', $block_name)->with([
+                'stringfields'=>function($query){
+                    $query->where('group_id','=',0);
+                },
+                'textfields'=>function($query){
+                        $query->where('group_id','=',0);
+                    },
+                'numbs'=>function($query){
+                        $query->where('group_id','=',0);
+                    },
+                'bools'=>function($query){
+                        $query->where('group_id','=',0);
+                    },
+                'pdatetimes'=>function($query){
+                        $query->where('group_id','=',0);
+                    },
+                'images'=>function($query){
+                        $query->where('group_id','=',0);
+                    }
+            ])->get();
         }else{
-            $blocks = Block::with(['stringfields', 'textfields', 'numbs', 'bools', 'pdatetimes', 'images'])->get();
+            $blocks = Block::with([
+                'stringfields'=>function($query){
+                        $query->where('group_id','=',0);
+                    },
+                'textfields'=>function($query){
+                        $query->where('group_id','=',0);
+                    },
+                'numbs'=>function($query){
+                        $query->where('group_id','=',0);
+                    },
+                'bools'=>function($query){
+                        $query->where('group_id','=',0);
+                    },
+                'pdatetimes'=>function($query){
+                        $query->where('group_id','=',0);
+                    },
+                'images'=>function($query){
+                        $query->where('group_id','=',0);
+                    }
+            ])->get();
         }
 
 
